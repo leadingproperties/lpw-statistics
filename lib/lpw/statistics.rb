@@ -16,6 +16,20 @@ module Lpw
       attribute :locale, String
       attribute :type, String
 
+      def get_range (from, to)
+
+      end
+
+      def backup
+
+      end
+
+      private
+
+      def clear_old
+
+      end
+
     end
   end
 end
