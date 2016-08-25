@@ -14,6 +14,7 @@ module Lpw
       attribute :agency_name, String
       attribute :action, String
       attribute :locale, String
+      attribute :type, String
 
     end
   end
