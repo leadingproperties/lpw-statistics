@@ -29,7 +29,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency('elasticsearch')
   spec.add_dependency('elasticsearch-persistence')
-  spec.add_dependency('pathname')
   spec.add_dependency('fileutils')
   spec.add_dependency('multi_json')
 
