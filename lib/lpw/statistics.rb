@@ -20,6 +20,7 @@ module Lpw
       attribute :action, String
       attribute :locale, String
       attribute :type, String
+      attribute :user_agent, String
 
       def self.get_range (from, to)
 
@@ -70,7 +71,7 @@ module Lpw
       end
 
       def path
-        Pathname.new File.join(dump_path , dump_filename.downcase)
+        Rails.root.join('tmp', 'backup')
       end
 
       def __perform_single
