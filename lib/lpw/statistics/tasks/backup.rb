@@ -1,7 +1,6 @@
 require 'backup'
 require 'elasticsearch/extensions/backup'
 
-
 namespace :backup do
   desc "Parcing property from XML"
   task :start => :environment do
