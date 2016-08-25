@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency('elasticsearch-extensions')
   spec.add_dependency('backup')
   spec.add_dependency('oj')
+  spec.add_dependency('patron')
 
 
   spec.add_development_dependency "bundler", "~> 1.12"
