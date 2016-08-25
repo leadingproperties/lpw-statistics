@@ -46,7 +46,7 @@ module Lpw
 
       attr_accessor :mode
 
-      def initialize(model, database_id = nil, &block)
+      def initialize(&block)
 
         @url     ||= 'http://localhost:9200'
         @indices ||= '_all'
