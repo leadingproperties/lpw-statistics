@@ -60,12 +60,12 @@ module Lpw
       def client
         @client ||= ::Elasticsearch::Client.new url: url
 
-        if Rails.env.development?
-          logger = ActiveSupport::Logger.new(STDERR)
-          logger.level = Logger::INFO
-          logger.formatter = proc { |s, d, p, m| "\e[2m#{m}\n\e[0m" }
-          Elasticsearch::Persistence.client.transport.logger = logger
-        end
+        # if Rails.env.development?
+        #   logger = ActiveSupport::Logger.new(STDERR)
+        #   logger.level = Logger::INFO
+        #   logger.formatter = proc { |s, d, p, m| "\e[2m#{m}\n\e[0m" }
+        #   Elasticsearch::Persistence.client.transport.logger = logger
+        # end
 
       end
 
