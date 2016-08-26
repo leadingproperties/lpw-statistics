@@ -77,7 +77,7 @@ module Lpw
         Rails.root.join('tmp', 'backup')
       end
 
-      def __perform_single
+      def perform!
         r = client.search index: indices, search_type: 'scan', scroll: scroll, size: size
         raise Error, "No scroll_id returned in response:\n#{r.inspect}" unless r['_scroll_id']
 
