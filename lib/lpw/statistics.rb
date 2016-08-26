@@ -47,6 +47,7 @@ module Lpw
         order = options.fetch(:order, 'desc')
 
         @search_definition = {
+            "size": 0,
             "query": {
                 "match": {
                     "action": action
@@ -75,7 +76,7 @@ module Lpw
                                         "type"
                                     ]
                                 },
-                                "size": 0
+                                "size": 1
                             }
                         }
                     }
