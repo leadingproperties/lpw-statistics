@@ -16,6 +16,12 @@ module Lpw
 
       index_name 'lpw-statistics'
 
+      settings number_of_shards: 1 do
+        mapping do
+          indexes :ip, type: 'ip'
+        end
+      end
+
       attribute :code, String
       attribute :agency_id, Integer
       attribute :property_object_id, Integer
@@ -24,18 +30,65 @@ module Lpw
       attribute :locale, String
       attribute :type, String
       attribute :user_agent, String
+      attribute :ip, String
 
       def self.get_range (from, to)
 
       end
 
-      def backup
+      # Aggregation to find top records
+      # By default showing top 10 show hits for property object
+      #
+      # @param [Object] options
+      def self.top_records options={}
+        action = options.fetch(:action, 'show')
+        size = options.fetch(:size, 10)
+        field = options.fetch(:field, 'property_object_id')
+        order = options.fetch(:order, 'desc')
 
+        @search_definition = {
+            "query": {
+                "match": {
+                    "action": action
+                }
+            },
+            "aggs": {
+                "top-property_object_id": {
+                    "terms": {
+                        "field": field,
+                        "size": size
+                    },
+                    "aggs": {
+                        "top_property_object_id_hits": {
+                            "top_hits": {
+                                "sort": [
+                                    {
+                                        "created_at": {
+                                            "order": order
+                                        }
+                                    }
+                                ],
+                                "_source": {
+                                    "include": [
+                                        "property_object_id",
+                                        "code",
+                                        "type"
+                                    ]
+                                },
+                                "size": 0
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        self.search(@search_definition).response.aggregations
       end
+
 
       private
 
-      def clear_old
+      def delete_period (from, to)
 
       end
 
