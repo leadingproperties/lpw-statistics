@@ -52,11 +52,11 @@ module Lpw
 
       def initialize(&block)
 
-        @url     ||= 'http://localhost:9200'
+        @url ||= 'http://localhost:9200'
         @indices ||= '_all'
-        @size    ||= 100
-        @scroll  ||= '10m'
-        @mode    ||= 'single'
+        @size ||= 100
+        @scroll ||= '10m'
+        @mode ||= 'single'
 
         instance_eval(&block) if block_given?
       end
@@ -92,8 +92,8 @@ module Lpw
         end
 
         # Zip
-
-        zf = Lpw::Statistics::ZipFileGenerator.new(path, "#{path.join Time.now, '-', 'backup.zip'}")
+        zfilename = "#{Time.now.to_formatted_s(:number)}-backup.zip"
+        zf = Lpw::Statistics::ZipFileGenerator.new(path, path.join(zfilename))
         zf.write()
       end
 
