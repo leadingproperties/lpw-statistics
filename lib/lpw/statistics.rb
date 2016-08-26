@@ -46,7 +46,8 @@ module Lpw
       attr_accessor :url,
                     :indices,
                     :size,
-                    :scroll
+                    :scroll,
+                    :zip_path
 
       attr_accessor :mode
 
@@ -93,7 +94,8 @@ module Lpw
 
         # Zip
         zfilename = "#{Time.now.to_formatted_s(:number)}-backup.zip"
-        zf = Lpw::Statistics::ZipFileGenerator.new(path, path.join(zfilename))
+        @zippath ||= path.join(zfilename)
+        zf = Lpw::Statistics::ZipFileGenerator.new(path, @zippath)
         zf.write()
       end
 
