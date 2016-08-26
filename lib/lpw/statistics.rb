@@ -24,7 +24,7 @@ module Lpw
       attribute :locale, String
       attribute :type, String
       attribute :user_agent, String
-      attribute :ip, mapping: { type: 'ip' }
+      attribute :ip, String
 
       def self.get_range (from, to)
 
