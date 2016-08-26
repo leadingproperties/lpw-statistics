@@ -10,12 +10,6 @@ require 'zip'
 
 module Lpw
   module Statistics
-    class Ip
-      include Virtus.model
-
-      attribute :ip, String
-    end
-
     class Statistic
 
       include Elasticsearch::Persistence::Model
@@ -30,7 +24,7 @@ module Lpw
       attribute :locale, String
       attribute :type, String
       attribute :user_agent, String
-      attribute :ip, Ip, mapping: { type: 'ip' }
+      attribute :ip, mapping: { type: 'ip' }
 
       def self.get_range (from, to)
 
