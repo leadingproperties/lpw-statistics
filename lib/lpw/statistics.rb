@@ -80,7 +80,7 @@ module Lpw
 
         while r = client.scroll(scroll_id: r['_scroll_id'], scroll: scroll) and not r['hits']['hits'].empty? do
           r['hits']['hits'].each do |hit|
-            filename = "#{hit['_id']-hit['_source']['created_at']}"
+            filename = "#{hit['_id']}-#{hit['_source']['created_at']}"
             FileUtils.mkdir_p "#{path.join hit['_index'], hit['_type']}"
             File.open("#{path.join hit['_index'], hit['_type'], filename}.json", 'w') do |file|
               file.write MultiJson.dump(hit)
