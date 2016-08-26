@@ -16,12 +16,6 @@ module Lpw
 
       index_name 'lpw-statistics'
 
-      settings number_of_shards: 1 do
-        mapping do
-          indexes :ip, type: 'ip'
-        end
-      end
-
       attribute :code, String
       attribute :agency_id, Integer
       attribute :property_object_id, Integer
@@ -30,7 +24,7 @@ module Lpw
       attribute :locale, String
       attribute :type, String
       attribute :user_agent, String
-      attribute :ip, String
+      attribute :ip, String, mapping: { type: 'ip' }
 
       def self.get_range (from, to)
 
