@@ -13,7 +13,7 @@ module Lpw
     class Ip
       include Virtus.model
 
-      attribute :ip
+      attribute :ip, String
     end
 
     class Statistic
