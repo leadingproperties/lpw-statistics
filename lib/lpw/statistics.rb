@@ -34,17 +34,94 @@ module Lpw
       # By default showing top 10 show hits for property object
       #
       # @param [Object] options
-      def self.top_records options={}
+      # +agency_id+
+      # !Required!
+      # Integer id of agency
+      #
+      #
+      # +action+ - action to calculate
+      # Values:
+      #  - show (showing an object)
+      #  - pdf (download PDF from object)
+      #  - request (sending from request from object)
+      #  *default: show
+      #  +size+ - count of records (if we talking about TOP)
+      #  Integer.
+      #  *default 10
+      #  +type+ - Source of record. Ex. 'wordpress' will show records from wordpress instance
+      #   *no default. if not in options will show records from all sources (global count of hits)
+      #  +field+ - main field of aggregation.
+      #  *default 'property_object_id'
+      #  +order+
+      #  Values:
+      #  - 'asc'
+      #  - 'desc'
+      #  *default: 'desc' (more hits on top)
+      # +time_unit+
+      # Values:
+      # all list here: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#time-units
+      # M - Month
+      # w - Week
+      # d - Day
+      # *default none - showing for all time.
+      #
+      # Examples:
+      # Мой сайт - -> в запросе указать  source_type: 'wordpress'
+      # Мои объекты ->  все тоже самое только source-type не передаем.
+      # Request payload:
+      # {
+      #   action: 'show', *values: 'show, pdf, request'
+      #   time_unit: 'd',  *Values: d/w/M
+      #   source_type: 'wordpress', * нужен в случае "My site"
+      #   size: 20
+      # }
+      #
+      # Answer example:
+      # answer = {
+      #   total: 100,
+      #   aggregations: [
+      #     {...},
+      #     {...}
+      #   ]
+      # }
+      #  Where:
+      # 1) Посещаемость общая по всем объектам на сайте за день/неделю/месяц
+      # 3) Активность
+      #
+      # answer['total']
+      #
+      # 2) Самые популярные объекты у меня на сайте (штук 20)
+      # 3.1) Лог последний запросов/скачиваний (например, 20 событий)
+      #
+      # answer['aggregations']
+      #
+      # @return [Hash]
+      # Will return Hash with aggregation part, and total count part.
+      # {
+      #   total: _integer_,
+      #   aggregations: _array_
+      # }
+      def self.call_for_statistic options={}
         action = options.fetch(:action, 'show')
         size = options.fetch(:size, 10)
         field = options.fetch(:field, 'property_object_id')
         order = options.fetch(:order, 'desc')
+        agency_id = options.fetch(:agency_id)
+        source_type = options.fetch(:type, nil)
+        time_unit = options.fetch(:time_unit, nil)
 
         @search_definition = {
             "size": 0,
             "query": {
-                "match": {
-                    "action": action
+                "constant_score": {
+                    "filter": {
+                        "bool": {
+                            "must": [
+                                {"term": {"action": action}},
+                                {"term": {"agency_id": agency_id}}
+                            ]
+                        }
+                    }
                 }
             },
             "aggs": {
@@ -77,12 +154,28 @@ module Lpw
                 }
             }
         }
-        self.search(@search_definition).response.aggregations
+
+        # Adding source of hits
+        @search_definition[:query][:constant_score][:filter][:bool][:must] << {"term": {"type": source_type}} if source_type
+        @search_definition[:query][:constant_score][:filter][:bool][:must] << {
+            "range": {
+                "created_at": {
+                    "gte": "now-1#{time_unit}/d",
+                    "lt": "now/d"
+                }
+            }
+        }  if time_unit
+
+        {
+            total: self.search(@search_definition).total,
+            aggregations: self.search(@search_definition).response.aggregations
+        }
       end
 
 
       private
 
+      # todo: create scroll function to delete old records after backup
       def delete_period (from, to)
 
       end
