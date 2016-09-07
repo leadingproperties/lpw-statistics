@@ -168,7 +168,7 @@ module Lpw
         result = self.search(@search_definition)
         {
             total: result.total,
-            aggregations: result.response.aggregations
+            aggregations: result.response.aggregations['top_results']['buckets']
         }
       end
 
