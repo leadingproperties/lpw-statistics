@@ -165,10 +165,10 @@ module Lpw
                 }
             }
         }  if time_unit
-
+        result = self.search(@search_definition)
         {
-            total: self.search(@search_definition).total,
-            aggregations: self.search(@search_definition).response.aggregations
+            total: result.total,
+            aggregations: result.response.aggregations
         }
       end
 
