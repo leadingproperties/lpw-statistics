@@ -125,13 +125,13 @@ module Lpw
                 }
             },
             "aggs": {
-                "top-property_object_id": {
+                "top_results": {
                     "terms": {
                         "field": field,
                         "size": size
                     },
                     "aggs": {
-                        "top_property_object_id_hits": {
+                        "result": {
                             "top_hits": {
                                 "sort": [
                                     {
