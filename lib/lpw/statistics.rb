@@ -72,7 +72,7 @@ module Lpw
       # {
       #   action: 'show', *values: 'show, pdf, request'
       #   time_unit: 'd',  *Values: d/w/M
-      #   source_type: 'wordpress', * нужен в случае "My site"
+      #   type: 'wordpress', * нужен в случае "My site"
       #   size: 20
       # }
       #
