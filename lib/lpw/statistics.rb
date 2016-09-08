@@ -161,7 +161,7 @@ module Lpw
             "range": {
                 "created_at": {
                     "gte": "now-1#{time_unit}/d",
-                    "lt": "now/d"
+                    "lt": "now"
                 }
             }
         }  if time_unit
