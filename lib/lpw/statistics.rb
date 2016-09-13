@@ -18,7 +18,9 @@ module Lpw
 
       attribute :code, String
       attribute :agency_id, Integer
+      attribute :user_id, Integer
       attribute :property_object_id, Integer
+      attribute :property_agency_id, Integer
       attribute :agency_name, String
       attribute :action, String
       attribute :locale, String
@@ -34,9 +36,10 @@ module Lpw
       # By default showing top 10 show hits for property object
       #
       # @param [Object] options
-      # +agency_id+
+      # +user_id+ To show all object on user website
       # !Required!
-      # Integer id of agency
+      #
+      # +property_agency_id+ To show all hits for agency objects
       #
       #
       # +action+ - action to calculate
@@ -48,8 +51,11 @@ module Lpw
       #  +size+ - count of records (if we talking about TOP)
       #  Integer.
       #  *default 10
-      #  +type+ - Source of record. Ex. 'wordpress' will show records from wordpress instance
-      #   *no default. if not in options will show records from all sources (global count of hits)
+      #  +type+ - Type of aggregation.
+      #  Values:
+      #  - website
+      #  - objects
+      #  *default: website
       #  +field+ - main field of aggregation.
       #  *default 'property_object_id'
       #  +order+
@@ -107,7 +113,9 @@ module Lpw
         field = options.fetch(:field, 'property_object_id')
         order = options.fetch(:order, 'desc')
         agency_id = options.fetch(:agency_id)
-        source_type = options.fetch(:type, nil)
+        user_id = options.fetch(:user_id)
+        property_agency_id = options.fetch(:property_agency_id)
+        aggr_type = options.fetch(:type, 'objects')
         time_unit = options.fetch(:time_unit, nil)
 
         @search_definition = {
@@ -118,7 +126,6 @@ module Lpw
                         "bool": {
                             "must": [
                                 {"term": {"action": action}},
-                                {"term": {"agency_id": agency_id}}
                             ]
                         }
                     }
@@ -155,8 +162,14 @@ module Lpw
             }
         }
 
-        # Adding source of hits
-        @search_definition[:query][:constant_score][:filter][:bool][:must] << {"term": {"type": source_type}} if source_type
+        # Adding type of hits
+        case aggr_type
+          when /website/
+            @search_definition[:query][:constant_score][:filter][:bool][:must] << {"term": {"user_id": user_id}}
+          when /objects/
+            @search_definition[:query][:constant_score][:filter][:bool][:must] << {"term": {"property_agency_id": property_agency_id}}
+        end
+
         @search_definition[:query][:constant_score][:filter][:bool][:must] << {
             "range": {
                 "created_at": {
