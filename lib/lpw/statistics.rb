@@ -148,7 +148,7 @@ module Lpw
                                     }
                                 ],
                                 "_source": {
-                                    "include": [
+                                    "includes": [
                                         "property_object_id",
                                         "code",
                                         "type"
