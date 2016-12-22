@@ -225,7 +225,13 @@ module Lpw
       end
 
       def client
-        @client ||= ::Elasticsearch::Client.new url: url
+        @client ||= ::Elasticsearch::Client.new hosts: [
+            host: @host,
+            port: @port,
+            user: @user,
+            password: @password,
+            scheme: @scheme
+        ]
 
         # if Rails.env.development?
         #   logger = ActiveSupport::Logger.new(STDERR)
