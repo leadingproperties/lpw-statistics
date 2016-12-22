@@ -197,7 +197,11 @@ module Lpw
 
     class Backup
 
-      attr_accessor :url,
+      attr_accessor :host,
+                    :port,
+                    :user,
+                    :password,
+                    :scheme,
                     :indices,
                     :size,
                     :scroll,
@@ -207,7 +211,11 @@ module Lpw
 
       def initialize(&block)
 
-        @url ||= 'http://localhost:9200'
+        @host ||= 'localhost'
+        @port ||= '9200'
+        @user ||= 'elastic'
+        @password ||= 'changeme'
+        @scheme ||= 'http'
         @indices ||= '_all'
         @size ||= 100
         @scroll ||= '10m'
