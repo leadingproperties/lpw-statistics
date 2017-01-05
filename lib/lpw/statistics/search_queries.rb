@@ -15,7 +15,7 @@ module Lpw
       attribute :locale, String
       attribute :type, String
       attribute :user_agent, String
-      attribute :ip, String, mapping: { type: 'ip' }
+      attribute :ip, String, {mapping: { type: 'ip' }}
 
 
     end
