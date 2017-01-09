@@ -27,10 +27,11 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency('elasticsearch')
-  spec.add_dependency('elasticsearch-persistence')
+  spec.add_dependency('httparty')
   spec.add_dependency('rubyzip')
 
   spec.add_development_dependency "bundler", "~> 1.12"
   spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "pry-coolline"
+  spec.add_development_dependency "pry"
 end
