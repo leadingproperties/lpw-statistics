@@ -5,7 +5,7 @@ module Lpw
 
 
       def initialize url, token
-        base_uri url
+        @base_uri = url
         @options = {
             headers: {
                 "Authorization" => "Token token=#{token}"
@@ -27,7 +27,7 @@ module Lpw
       # }
 
       def create attributes={}
-        self.class.post('/views', @options.merge(
+        self.class.post("#{@base_uri}/views", @options.merge(
             body: {
                 view: {
                     request_user_agent: attributes[:request_user_agent],
