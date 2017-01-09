@@ -2,12 +2,13 @@ module Lpw
   module Statistics
     class View
       include HTTParty
-      base_uri ENV['LPW_STATISTIC_APP_URL']
 
-      def initialize
+
+      def initialize url, token
+        base_uri url
         @options = {
             headers: {
-                "Authorization" => "Token token=#{ENV['LPW_STATISTIC_APP_TOKEN']}"
+                "Authorization" => "Token token=#{token}"
             }
         }
       end
