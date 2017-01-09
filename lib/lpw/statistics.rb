@@ -2,8 +2,7 @@
 require 'pathname'
 require 'fileutils'
 require 'multi_json'
-require 'elasticsearch'
-require 'elasticsearch/persistence/model'
+require 'httparty'
 require 'rubygems'
 require 'zip'
 
