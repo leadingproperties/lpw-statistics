@@ -26,7 +26,7 @@ module Lpw
         self.class.post("#{@base_uri}/search_queries", @options.merge(
             body: {
                 search_query: {
-                    request_user_agent: attributes[:request_user_agent],
+                    requester_user_agent: attributes[:request_user_agent],
                     requester_ip: attributes[:requester_ip],
                     from_agency_id: attributes[:agency_id],
                     locale: attributes[:locale],
