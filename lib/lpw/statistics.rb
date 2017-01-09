@@ -9,9 +9,9 @@ require 'zip'
 
 require 'lpw/statistics/version'
 require 'lpw/statistics/statistic'
-require 'lpw/statistics/backup'
+# require 'lpw/statistics/backup'
 require 'lpw/statistics/zip_file_generator'
-require 'lpw/statistics/search_queries'
+require 'lpw/statistics/search_query'
 
 module Lpw
   module Statistics
