@@ -2,12 +2,12 @@ module Lpw
   module Statistics
     class SearchQuery
       include HTTParty
-      base_uri ENV['LPW_STATISTIC_APP_URL']
 
-      def initialize
+      def initialize url, token
+        @base_uri = url
         @options = {
             headers: {
-                "Authorization" => "Token token=#{ENV['LPW_STATISTIC_APP_TOKEN']}"
+                "Authorization" => "Token token=#{token}"
             }
         }
       end
@@ -23,7 +23,7 @@ module Lpw
       #   locale: attributes[:locale],
       # }
       def create attributes={}
-        self.class.post('/search_queries', @options.merge(
+        self.class.post("#{@base_uri}/search_queries", @options.merge(
             body: {
                 search_query: {
                     request_user_agent: attributes[:request_user_agent],
