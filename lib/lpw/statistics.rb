@@ -8,7 +8,7 @@ require 'rubygems'
 require 'zip'
 
 require 'lpw/statistics/version'
-require 'lpw/statistics/statistic'
+require 'lpw/statistics/view'
 # require 'lpw/statistics/backup'
 require 'lpw/statistics/zip_file_generator'
 require 'lpw/statistics/search_query'

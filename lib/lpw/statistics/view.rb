@@ -4,26 +4,44 @@ module Lpw
       include HTTParty
       base_uri ENV['LPW_STATISTIC_APP_URL']
 
-      def initialize(description_id, admin_id)
-        @description_id = description_id
+      def initialize
         @options = {
             headers: {
                 "Authorization" => "Token token=#{ENV['LPW_STATISTIC_APP_TOKEN']}"
-            },
-            body: {
-                property_object_description: {admin_id: admin_id}
             }
         }
       end
 
-      def generate_description_by_constructor
-        self.class.patch("/property_object_descriptions/#{@description_id}/generate_description_by_constructor", @options)
-      end
+      # {
+      #   request_user_agent: +user agent of requester+,
+      #   requester_ip: +ip address of requester+,
+      #   from_agency_id: attributes[:agency_id],
+      #   from_user_id: attributes[:from_user_id],
+      #   locale: attributes[:locale],
+      #   code: attributes[:code],
+      #   "property_object_id": 1111,
+      #   "property_agency_id": 32,
+      #   "from_agency_name": "test agency",
+      #   "action": "view",
+      # }
 
-      def generate_partly_description_by_constructor(locale, part)
-        @options[:body][:property_object_description][:locale] = locale
-        @options[:body][:property_object_description][:partly] = part
-        self.class.patch("/property_object_descriptions/#{@description_id}/generate_partly_description_by_constructor", @options)
+      def create attributes={}
+        self.class.post('/views', @options.merge(
+            body: {
+                view: {
+                    request_user_agent: attributes[:request_user_agent],
+                    requester_ip: attributes[:requester_ip],
+                    from_agency_id: attributes[:agency_id],
+                    from_user_id: attributes[:user_id],
+                    locale: attributes[:locale],
+                    code: attributes[:code],
+                    property_object_id: attributes[:property_object_id],
+                    property_agency_id: attributes[:property_agency_id],
+                    from_agency_name: attributes[:from_agency_name],
+                    action: attributes[:action],
+                }
+            }
+        ))
       end
 
     end
