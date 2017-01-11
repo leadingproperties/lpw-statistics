@@ -30,6 +30,7 @@ module Lpw
         self.class.post("#{@base_uri}/views", @options.merge(
             body: {
                 view: {
+                    id: attributes[:id],
                     requester_user_agent: attributes[:user_agent],
                     requester_ip: attributes[:ip],
                     from_agency_id: attributes[:agency_id],
