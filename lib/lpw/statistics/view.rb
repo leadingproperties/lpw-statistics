@@ -41,7 +41,9 @@ module Lpw
                     property_agency_id: attributes[:property_agency_id],
                     from_agency_name: attributes[:agency_name],
                     action: attributes[:action],
-                    type: attributes[:type]
+                    type: attributes[:type],
+                    for_sale: attributes[:for_sale],
+                    for_rent: attributes[:for_rent]
                 }
             }
         ))
