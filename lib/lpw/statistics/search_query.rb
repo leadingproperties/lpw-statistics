@@ -33,7 +33,8 @@ module Lpw
                     location_shape: attributes[:location_shape],
                     location_point: attributes[:location_point],
                     query_text: attributes[:query_text],
-                    place_id: attributes[:place_id]
+                    place_id: attributes[:place_id],
+                    property_objects_total: attributes[:property_objects_total]
                 }
             }
         ))
