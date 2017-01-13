@@ -34,7 +34,9 @@ module Lpw
                     location_point: attributes[:location_point],
                     query_text: attributes[:query_text],
                     place_id: attributes[:place_id],
-                    property_objects_total: attributes[:property_objects_total]
+                    property_objects_total: attributes[:property_objects_total],
+                    for_sale: attributes[:for_sale],
+                    for_rent: attributes[:for_rent]
                 }
             }
         ))
