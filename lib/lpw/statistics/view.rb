@@ -49,7 +49,7 @@ module Lpw
         ))
       end
 
-      def self.call_for_statistic options={}
+      def call_for_statistic options={}
         action = options.fetch(:action, 'show')
         size = options.fetch(:size, 10)
         field = options.fetch(:field, 'property_object_id')
