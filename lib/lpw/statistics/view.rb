@@ -122,11 +122,8 @@ module Lpw
         } if time_unit
 
 
-        result = self.class.get("#{@base_uri}/views", @options.merge(body: {view: @search_definition}))
-        {
-            total: result.total,
-            aggregations: result.response.aggregations['top_results']['buckets']
-        }
+        self.class.post("#{@base_uri}/views/aggregations", @options.merge(body: {view: @search_definition}))
+
       end
 
     end
