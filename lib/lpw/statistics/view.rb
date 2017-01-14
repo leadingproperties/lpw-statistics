@@ -122,7 +122,7 @@ module Lpw
         } if time_unit
 
 
-        self.class.post("#{@base_uri}/views/aggregations", @options.merge(body: {view: @search_definition}))
+        self.class.post("#{@base_uri}/views/aggregations", @options.merge(body: {view: @search_definition.to_hash}))
 
       end
 
