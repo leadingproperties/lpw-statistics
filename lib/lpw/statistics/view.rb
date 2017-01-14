@@ -49,6 +49,86 @@ module Lpw
         ))
       end
 
+      def self.call_for_statistic options={}
+        action = options.fetch(:action, 'show')
+        size = options.fetch(:size, 10)
+        field = options.fetch(:field, 'property_object_id')
+        order = options.fetch(:order, 'desc')
+        agency_id = options.fetch(:agency_id)
+        user_id = options.fetch(:user_id)
+        property_agency_id = options.fetch(:property_agency_id)
+        aggr_type = options.fetch(:type, 'objects')
+        time_unit = options.fetch(:time_unit, nil)
+
+        @search_definition = {
+            "size": 0,
+            "query": {
+                "constant_score": {
+                    "filter": {
+                        "bool": {
+                            "must": [
+                                {"term": {"action": action}},
+                            ]
+                        }
+                    }
+                }
+            },
+            "aggs": {
+                "top_results": {
+                    "terms": {
+                        "field": field,
+                        "size": size
+                    },
+                    "aggs": {
+                        "result": {
+                            "top_hits": {
+                                "sort": [
+                                    {
+                                        "created_at": {
+                                            "order": order
+                                        }
+                                    }
+                                ],
+                                "_source": {
+                                    "includes": [
+                                        "property_object_id",
+                                        "code",
+                                        "type"
+                                    ]
+                                },
+                                "size": 1
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        # Adding type of hits
+        case aggr_type
+          when /website/
+            @search_definition[:query][:constant_score][:filter][:bool][:must] << {"term": {"user_id": user_id}}
+          when /objects/
+            @search_definition[:query][:constant_score][:filter][:bool][:must] << {"term": {"property_agency_id": property_agency_id}}
+        end
+
+        @search_definition[:query][:constant_score][:filter][:bool][:must] << {
+            "range": {
+                "created_at": {
+                    "gte": "now-1#{time_unit}/d",
+                    "lt": "now"
+                }
+            }
+        } if time_unit
+
+
+        result = self.class.get("#{@base_uri}/views", @options.merge(body: {view: @search_definition}))
+        {
+            total: result.total,
+            aggregations: result.response.aggregations['top_results']['buckets']
+        }
+      end
+
     end
   end
 end
