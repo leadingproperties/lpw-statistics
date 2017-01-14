@@ -1,5 +1,5 @@
 module Lpw
   module Statistics
-    VERSION = "1.1.17"
+    VERSION = "1.2.0"
   end
 end
